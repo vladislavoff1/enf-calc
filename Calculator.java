@@ -1,3 +1,5 @@
+import java.util.function.Function;
+
 public class Calculator {
 	public static void main(String[] args) {
 		if (args.length < 1) {
@@ -5,22 +7,25 @@ public class Calculator {
 			return;
 		}
 
-		// Parse expression
-		Node<Integer, Operation<Integer>> expression = new ExpressionParser().parse(args[0]);
+		for (int i = 0; i < args.length; i++) {
+			// Parse expression
+			Node<Integer, Operation<Integer>> expression = new ExpressionParser().parse(args[i]);
 
-		// Calculate result
-		Integer res = expression.process((l) -> l, (f, l, r) -> f.evaluate.apply(l, r));
+			// Calculate result
+			Integer res = ExpressionUtils.evaluate(expression);
 
-		// To string
-		String str = expression.process(
+			// To string
+			String str = ExpressionUtils.toString(expression);
 
-			(l) -> l.toString(), 
+			// Inversion
+			Node<Integer, Operation<Integer>> invExpression = ExpressionUtils.changeLeafs(expression, l -> -l);
+			String invStr = ExpressionUtils.toString(invExpression);
 
-			(f, l, r) -> f.visual
-				.replaceAll("%l", l.toString())
-				.replaceAll("%r", r.toString())
-		);
-
-		System.out.println(str + " = " + res);
-	}	
+			System.out.println();
+			System.out.println(str + " = " + res);
+			System.out.println("Inverted: " + invStr);
+		}
+		
+		System.out.println();
+	}
 }
